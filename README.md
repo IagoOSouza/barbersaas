@@ -83,3 +83,4 @@ app/
 4. Railway detecta o `Procfile` e faz o deploy automaticamente
 # barbersaas
 # barbersaas
+# barbersaas

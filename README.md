@@ -82,3 +82,4 @@ app/
 3. Adicione as variáveis do `.env` no painel do Railway
 4. Railway detecta o `Procfile` e faz o deploy automaticamente
 # barbersaas
+# barbersaas

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — {{ barber.barbershop.name }}{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+  <h1 class="text-2xl font-bold">Olá, {{ barber.name }} 👋</h1>
+  <p class="text-gray-500 text-sm mt-1">{{ barber.barbershop.name }} · {{ today.strftime('%A, %d de %B') }}</p>
+</div>
+
+<!-- Cards de resumo -->
+<div class="grid grid-cols-3 gap-4 mb-8">
+  <div class="bg-gray-900 border border-gray-800 rounded-lg p-5">
+    <div class="text-3xl font-bold text-yellow-600">{{ today_appointments|length }}</div>
+    <div class="text-gray-500 text-sm mt-1">Agendamentos hoje</div>
+  </div>
+  <div class="bg-gray-900 border border-gray-800 rounded-lg p-5">
+    <div class="text-3xl font-bold text-yellow-600">{{ total_clients }}</div>
+    <div class="text-gray-500 text-sm mt-1">Clientes cadastrados</div>
+  </div>
+  <div class="bg-gray-900 border border-gray-800 rounded-lg p-5">
+    <div class="text-sm text-gray-400 mb-2">Link de agendamento</div>
+    <code class="text-xs text-yellow-600 break-all">/b/{{ barber.barbershop.slug }}</code>
+  </div>
+</div>
+
+<!-- Agenda de hoje -->
+<div class="bg-gray-900 border border-gray-800 rounded-lg p-6">
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="font-semibold">Agenda de Hoje</h2>
+    <a href="/appointments/new" class="text-xs bg-yellow-600 hover:bg-yellow-500 text-black px-3 py-1.5 rounded font-bold transition">
+      + Novo agendamento
+    </a>
+  </div>
+
+  {% if today_appointments %}
+    <div class="space-y-2">
+      {% for apt in today_appointments %}
+      <div class="flex items-center justify-between bg-gray-800 rounded p-3">
+        <div class="flex items-center gap-4">
+          <span class="text-yellow-600 font-mono text-sm font-bold">
+            {{ apt.scheduled_at.strftime('%H:%M') }}
+          </span>
+          <div>
+            <div class="text-sm font-medium">{{ apt.client.name }}</div>
+            <div class="text-xs text-gray-500">{{ apt.service.name }}</div>
+          </div>
+        </div>
+        <form method="POST" action="/appointments/{{ apt.id }}/cancel"
+          onsubmit="return confirm('Cancelar este agendamento?')">
+          <button class="text-xs text-red-500 hover:text-red-400">Cancelar</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-gray-600 text-sm text-center py-6">Nenhum agendamento para hoje.</p>
+  {% endif %}
+</div>
+{% endblock %}

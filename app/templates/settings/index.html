@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% block title %}Configurações{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+  <h1 class="text-2xl font-bold">Configurações</h1>
+  <p class="text-gray-500 text-sm mt-1">Gerencie os dados da sua barbearia</p>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="mb-4 p-3 rounded text-sm
+        {% if category == 'error' %}bg-red-900 text-red-200{% else %}bg-green-900 text-green-200{% endif %}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<div class="space-y-6">
+
+  <!-- Dados da barbearia -->
+  <div class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-800">
+      <h2 class="font-semibold">Dados da Barbearia</h2>
+      <p class="text-xs text-gray-500 mt-0.5">Nome, telefone e endereço</p>
+    </div>
+    <form method="POST" action="/settings/barbershop" class="p-6 space-y-4">
+      <div class="grid grid-cols-2 gap-4">
+        <div class="col-span-2">
+          <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1">Nome da barbearia</label>
+          <input type="text" name="name" value="{{ barber.barbershop.name }}" required
+            class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-yellow-600">
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1">WhatsApp</label>
+          <input type="tel" name="phone" value="{{ barber.barbershop.phone or '' }}" placeholder="31999990000"
+            class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-yellow-600">
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1">Link público</label>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-gray-500 bg-gray-800 border border-gray-700 rounded px-3 py-2 flex-1 truncate">
+              /b/{{ barber.barbershop.slug }}
+            </span>
+          </div>
+        </div>
+        <div class="col-span-2">
+          <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1">Endereço</label>
+          <input type="text" name="address" value="{{ barber.barbershop.address or '' }}" placeholder="Rua, número — Bairro, Cidade"
+            class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-yellow-600">
+        </div>
+      </div>
+      <div class="flex justify-end">
+        <button type="submit"
+          class="bg-yellow-600 hover:bg-yellow-500 text-black font-bold px-5 py-2 rounded text-sm transition">
+          Salvar dados
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Horários de funcionamento -->
+  <div class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-800">
+      <h2 class="font-semibold">Horários de Funcionamento</h2>
+      <p class="text-xs text-gray-500 mt-0.5">Define os dias e horários em que a barbearia está aberta</p>
+    </div>
+    <form method="POST" action="/settings/hours" class="p-6">
+      <div class="space-y-3">
+        {% set days = [
+          ('mon', 'Segunda-feira',  '08:00', '19:00', True),
+          ('tue', 'Terça-feira',    '08:00', '19:00', True),
+          ('wed', 'Quarta-feira',   '08:00', '19:00', True),
+          ('thu', 'Quinta-feira',   '08:00', '19:00', True),
+          ('fri', 'Sexta-feira',    '08:00', '19:00', True),
+          ('sat', 'Sábado',         '08:00', '17:00', True),
+          ('sun', 'Domingo',        '08:00', '12:00', False),
+        ] %}
+        {% for key, label, default_open, default_close, default_active in days %}
+        <div class="flex items-center gap-4">
+          <label class="flex items-center gap-2 w-36 cursor-pointer">
+            <input type="checkbox" name="{{ key }}_active" {% if default_active %}checked{% endif %}
+              class="rounded border-gray-600 bg-gray-800 text-yellow-600 focus:ring-yellow-600"
+              onchange="toggleDay('{{ key }}', this.checked)">
+            <span class="text-sm">{{ label }}</span>
+          </label>
+          <div id="{{ key }}-hours" class="flex items-center gap-2 {% if not default_active %}opacity-30 pointer-events-none{% endif %}">
+            <input type="time" name="{{ key }}_open" value="{{ default_open }}"
+              class="bg-gray-800 border border-gray-700 rounded px-2 py-1.5 text-sm focus:outline-none focus:border-yellow-600">
+            <span class="text-gray-500 text-sm">até</span>
+            <input type="time" name="{{ key }}_close" value="{{ default_close }}"
+              class="bg-gray-800 border border-gray-700 rounded px-2 py-1.5 text-sm focus:outline-none focus:border-yellow-600">
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="flex justify-end mt-5">
+        <button type="submit"
+          class="bg-yellow-600 hover:bg-yellow-500 text-black font-bold px-5 py-2 rounded text-sm transition">
+          Salvar horários
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Alterar senha -->
+  <div class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-800">
+      <h2 class="font-semibold">Alterar Senha</h2>
+      <p class="text-xs text-gray-500 mt-0.5">Senha de acesso ao painel</p>
+    </div>
+    <form method="POST" action="/settings/password" class="p-6 space-y-4">
+      <div>
+        <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1">Senha atual</label>
+        <input type="password" name="current_password" required
+          class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-yellow-600">
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1">Nova senha</label>
+          <input type="password" name="new_password" required minlength="6"
+            class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-yellow-600">
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1">Confirmar senha</label>
+          <input type="password" name="confirm_password" required minlength="6"
+            class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-yellow-600">
+        </div>
+      </div>
+      <div class="flex justify-end">
+        <button type="submit"
+          class="bg-yellow-600 hover:bg-yellow-500 text-black font-bold px-5 py-2 rounded text-sm transition">
+          Alterar senha
+        </button>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+<script>
+function toggleDay(key, active) {
+  const el = document.getElementById(key + '-hours');
+  el.classList.toggle('opacity-30', !active);
+  el.classList.toggle('pointer-events-none', !active);
+}
+</script>
+{% endblock %}

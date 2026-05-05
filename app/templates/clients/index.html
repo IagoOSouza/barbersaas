@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Clientes{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold">Clientes</h1>
+  <a href="/clients/new" class="text-sm bg-yellow-600 hover:bg-yellow-500 text-black px-4 py-2 rounded font-bold transition">
+    + Novo cliente
+  </a>
+</div>
+
+<!-- Busca -->
+<form method="GET" class="mb-6">
+  <input type="text" name="q" value="{{ search }}" placeholder="Buscar por nome..."
+    class="w-full max-w-sm bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-yellow-600">
+</form>
+
+<div class="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
+  {% if clients %}
+    <table class="w-full text-sm">
+      <thead class="bg-gray-800 text-gray-400 text-xs uppercase tracking-wider">
+        <tr>
+          <th class="text-left px-4 py-3">Nome</th>
+          <th class="text-left px-4 py-3">Telefone</th>
+          <th class="text-left px-4 py-3">Agendamentos</th>
+          <th class="px-4 py-3"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-800">
+        {% for client in clients %}
+        <tr class="hover:bg-gray-800 transition">
+          <td class="px-4 py-3 font-medium">{{ client.name }}</td>
+          <td class="px-4 py-3 text-gray-400">{{ client.phone }}</td>
+          <td class="px-4 py-3 text-gray-400">{{ client.appointments|length }}</td>
+          <td class="px-4 py-3 text-right">
+            <a href="/clients/{{ client.id }}" class="text-yellow-600 hover:text-yellow-500 text-xs">Ver</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="text-gray-600 text-sm text-center py-10">
+      {% if search %}Nenhum cliente encontrado para "{{ search }}".
+      {% else %}Nenhum cliente cadastrado ainda.{% endif %}
+    </p>
+  {% endif %}
+</div>
+{% endblock %}

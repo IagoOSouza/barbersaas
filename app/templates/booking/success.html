@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agendado! — {{ barbershop.name }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen flex items-center justify-center">
+  <div class="text-center px-6 max-w-sm">
+    <div class="text-6xl mb-4">✅</div>
+    <h1 class="text-2xl font-bold mb-2">Agendado!</h1>
+    <p class="text-gray-400 text-sm mb-6">
+      Você vai receber uma confirmação no WhatsApp e um lembrete 24h antes.
+    </p>
+    <div class="bg-gray-900 border border-gray-800 rounded-lg p-5 text-left mb-6">
+      <div class="space-y-2 text-sm">
+        <div class="flex justify-between">
+          <span class="text-gray-500">Data</span>
+          <span>{{ appointment.scheduled_at.strftime('%d/%m/%Y às %H:%M') }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-gray-500">Serviço</span>
+          <span>{{ appointment.service.name }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-gray-500">Barbearia</span>
+          <span>{{ barbershop.name }}</span>
+        </div>
+      </div>
+    </div>
+    <a href="/b/{{ barbershop.slug }}" class="text-yellow-600 text-sm hover:text-yellow-500">
+      Fazer outro agendamento
+    </a>
+  </div>
+</body>
+</html>

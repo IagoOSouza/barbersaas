@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Novo Cliente{% endblock %}
+
+{% block content %}
+<div class="max-w-lg">
+  <h1 class="text-2xl font-bold mb-6">Novo Cliente</h1>
+
+  <div class="bg-gray-900 border border-gray-800 rounded-lg p-6">
+    <form method="POST" action="/clients/new" class="space-y-4">
+      <div>
+        <label class="block text-sm text-gray-400 mb-1">Nome *</label>
+        <input type="text" name="name" required
+          class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-yellow-600">
+      </div>
+      <div>
+        <label class="block text-sm text-gray-400 mb-1">WhatsApp *</label>
+        <input type="tel" name="phone" required placeholder="11999999999"
+          class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-yellow-600">
+      </div>
+      <div>
+        <label class="block text-sm text-gray-400 mb-1">Email</label>
+        <input type="email" name="email"
+          class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-yellow-600">
+      </div>
+      <div>
+        <label class="block text-sm text-gray-400 mb-1">Aniversário</label>
+        <input type="date" name="birthday"
+          class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-yellow-600">
+      </div>
+      <div>
+        <label class="block text-sm text-gray-400 mb-1">Observações</label>
+        <textarea name="notes" rows="2" placeholder="Preferências de corte, etc."
+          class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-yellow-600"></textarea>
+      </div>
+      <div class="flex gap-3 pt-2">
+        <button type="submit"
+          class="flex-1 bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-2 rounded text-sm transition">
+          Salvar cliente
+        </button>
+        <a href="/clients"
+          class="px-4 py-2 text-sm text-gray-400 hover:text-white border border-gray-700 rounded transition">
+          Cancelar
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

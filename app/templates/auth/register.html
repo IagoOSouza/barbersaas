@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro — BarberSaaS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen flex items-center justify-center py-10">
+
+  <div class="w-full max-w-sm">
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-bold text-yellow-600 tracking-widest">✂ BarberSaaS</h1>
+      <p class="text-gray-500 text-sm mt-2">Cadastre sua barbearia gratuitamente</p>
+    </div>
+
+    <div class="bg-gray-900 border border-gray-800 p-8 rounded-lg">
+      {% if error %}
+        <div class="bg-red-900 text-red-200 text-sm p-3 rounded mb-4">{{ error }}</div>
+      {% endif %}
+
+      <form method="POST" action="/auth/register" class="space-y-4">
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Nome da Barbearia</label>
+          <input type="text" name="barbershop_name" required placeholder="Ex: Barbearia do João"
+            class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-yellow-600">
+        </div>
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Seu Nome</label>
+          <input type="text" name="name" required
+            class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-yellow-600">
+        </div>
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Email</label>
+          <input type="email" name="email" required
+            class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-yellow-600">
+        </div>
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Senha</label>
+          <input type="password" name="password" required minlength="6"
+            class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none focus:border-yellow-600">
+        </div>
+        <button type="submit"
+          class="w-full bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-2 rounded text-sm transition">
+          Criar conta grátis
+        </button>
+      </form>
+    </div>
+
+    <p class="text-center text-gray-600 text-sm mt-4">
+      Já tem conta?
+      <a href="/auth/login" class="text-yellow-600 hover:text-yellow-500">Entrar</a>
+    </p>
+  </div>
+
+</body>
+</html>
